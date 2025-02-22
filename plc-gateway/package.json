@@ -1,0 +1,23 @@
+{
+  "name": "plc-gateway",
+  "version": "1.0.0",
+  "description": "Passerelle de conversion Modbus TCP vers OPC UA",
+  "main": "gateway.js",
+  "scripts": {
+    "start": "node gateway.js"
+  },
+  "keywords": [
+    "modbus",
+    "opcua",
+    "industrial",
+    "gateway",
+    "plc"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "node-opcua": "^2.107.0",
+    "modbus-serial": "^8.0.13",
+    "winston": "^3.11.0"
+  }
+}
