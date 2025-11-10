@@ -7,14 +7,14 @@ Passerelle industrielle complète permettant la conversion de protocoles PLC Mod
 ### Architecture
 
 ```
-┌──────────────────┐      ┌──────────────┐      ┌──────────┐      ┌──────────┐      ┌─────────┐
-│ Simulateur PLC   │─────▶│   Gateway    │─────▶│ Node-RED │─────▶│ InfluxDB │─────▶│ Grafana │
-│ (Modbus TCP)     │      │ Modbus→OPCUA │      │          │      │          │      │         │
-└──────────────────┘      └──────────────┘      └──────────┘      └──────────┘      └─────────┘
++------------------+      +--------------+      +----------+      +----------+      +---------+
+| Simulateur PLC   |----->|   Gateway    |----->| Node-RED |----->| InfluxDB |----->| Grafana |
+| (Modbus TCP)     |      | Modbus→OPCUA |      |          |      |          |      |         |
++------------------+      +--------------+      +----------+      +----------+      +---------+
    Port 5020                 Port 4840            Port 1880         Port 8086         Port 3000
 ```
 
-##  Fonctionnalités
+## Fonctionnalités
 
 ### Simulateur Modbus
 - Génération de données réalistes pour environnement industriel
@@ -54,7 +54,7 @@ Passerelle industrielle complète permettant la conversion de protocoles PLC Mod
   - Indicateurs d'état
   - Statistiques de production
 
-## 🚀 Installation et démarrage
+## Installation et démarrage
 
 ### Prérequis
 
@@ -114,13 +114,13 @@ Tous les services doivent être "Up" après 30-60 secondes.
 
 3. **Accéder aux interfaces**
 
-| Service | URL | Identifiants |
-|---------|-----|--------------|
-| Grafana | http://localhost:3000 | admin / admin |
-| Node-RED | http://localhost:1880 | Aucun |
-| InfluxDB | http://localhost:8086 | admin / adminpassword |
+| Service    | URL                     | Identifiants            |
+|------------|-------------------------|-------------------------|
+| Grafana    | http://localhost:3000   | admin / admin           |
+| Node-RED   | http://localhost:1880   | Aucun                   |
+| InfluxDB   | http://localhost:8086   | admin / adminpassword   |
 
-##  Utilisation
+## Utilisation
 
 ### 1. Visualisation dans Grafana
 
@@ -160,7 +160,7 @@ docker-compose logs -f plc-gateway
 docker-compose logs -f node-red
 ```
 
-##  Tests et validation
+## Tests et validation
 
 ### Test 1 : Connexion Modbus
 
@@ -214,7 +214,7 @@ docker-compose logs -f plc-gateway
 # Vérifier absence d'erreurs pendant 5 minutes
 ```
 
-##  Configuration avancée
+## Configuration avancée
 
 ### Modifier l'intervalle de polling
 
@@ -248,7 +248,7 @@ serverCertificateManager: new opcua.OPCUACertificateManager({
 })
 ```
 
-##  Dépannage
+## Dépannage
 
 ### Problème : Le simulateur ne démarre pas
 
@@ -297,7 +297,7 @@ docker-compose logs -f plc-gateway
 # Redéployer le flow Node-RED si nécessaire
 ```
 
-##  Performance
+## Performance
 
 ### Métriques observées
 
@@ -316,18 +316,18 @@ Pour améliorer les performances :
 3. Activer l'agrégation dans InfluxDB
 4. Limiter la rétention des données historiques
 
-##  Variables d'environnement
+## Variables d'environnement
 
-| Variable | Service | Défaut | Description |
-|----------|---------|--------|-------------|
-| MODBUS_PORT | modbus-simulator | 5020 | Port d'écoute Modbus |
-| UPDATE_INTERVAL | modbus-simulator | 1 | Intervalle de mise à jour (s) |
-| MODBUS_HOST | plc-gateway | modbus-simulator | Hôte du serveur Modbus |
-| MODBUS_PORT | plc-gateway | 5020 | Port du serveur Modbus |
-| OPCUA_PORT | plc-gateway | 4840 | Port du serveur OPC UA |
-| POLL_INTERVAL | plc-gateway | 1000 | Intervalle de polling (ms) |
+| Variable         | Service           | Défaut | Description                      |
+|------------------|-------------------|--------|----------------------------------|
+| MODBUS_PORT      | modbus-simulator  | 5020   | Port d'écoute Modbus             |
+| UPDATE_INTERVAL  | modbus-simulator  | 1      | Intervalle de mise à jour (s)    |
+| MODBUS_HOST      | plc-gateway       | modbus-simulator | Hôte du serveur Modbus    |
+| MODBUS_PORT      | plc-gateway       | 5020   | Port du serveur Modbus           |
+| OPCUA_PORT       | plc-gateway       | 4840   | Port du serveur OPC UA           |
+| POLL_INTERVAL    | plc-gateway       | 1000   | Intervalle de polling (ms)       |
 
-##  Sécurité
+## Sécurité
 
 ### Recommandations production
 
@@ -347,7 +347,7 @@ Pour améliorer les performances :
    - Utiliser un réseau Docker dédié
    - Firewall pour restreindre les accès
 
-##  Export et sauvegarde
+## Export et sauvegarde
 
 ### Export du dashboard Grafana
 
@@ -370,7 +370,7 @@ docker cp plc-gateway_influxdb_1:/tmp/backup ./backup-$(date +%Y%m%d)
 # Copier ce fichier pour backup
 ```
 
-##  Développement
+## Développement
 
 ### Ajouter une nouvelle mesure
 
@@ -389,7 +389,7 @@ docker-compose exec modbus-simulator python -m pytest tests/
 docker-compose exec plc-gateway npm test
 ```
 
-## 📚 Références
+## Références
 
 - [Modbus Protocol](https://modbus.org/)
 - [OPC UA Specification](https://opcfoundation.org/)
@@ -397,11 +397,11 @@ docker-compose exec plc-gateway npm test
 - [InfluxDB Docs](https://docs.influxdata.com/)
 - [Grafana Documentation](https://grafana.com/docs/)
 
-## 📄 Licence
+## Licence
 
 MIT License - Libre d'utilisation et modification.
 
-## 👥 Support
+## Support
 
 Pour toute question :
 1. Consulter les logs : `docker-compose logs`
@@ -410,6 +410,6 @@ Pour toute question :
 
 ---
 
-**Statut du projet** : ✅ Production Ready
+**Statut du projet** : Production Ready
 
 **Dernière mise à jour** : 2025-01-07
