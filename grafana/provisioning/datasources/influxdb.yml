@@ -1,3 +1,4 @@
+# Fichier de provisionnement de la source de données InfluxDB pour Grafana
 apiVersion: 1
 
 datasources:

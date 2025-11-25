@@ -1,12 +1,10 @@
-version: '3.8'
-
 services:
-  # Simulateur Modbus (Serveur PLC simulé)
+  # Simulateur Modbus (serveur PLC simulé)
   modbus-simulator:
     build:
       context: ./modbus-simulator
       dockerfile: Dockerfile
-    container_name: modbus-simulator
+    container_name: plc-modbus-simulator
     ports:
       - "5020:5020"
     networks:
@@ -16,12 +14,12 @@ services:
       - MODBUS_PORT=5020
       - UPDATE_INTERVAL=1
 
-  # Gateway de conversion Modbus vers OPC UA
+  # Passerelle de conversion Modbus vers OPC UA
   plc-gateway:
     build:
       context: ./plc-gateway
       dockerfile: Dockerfile
-    container_name: plc-gateway
+    container_name: plc-opcua-gateway
     ports:
       - "4840:4840"
     networks:
@@ -41,7 +39,7 @@ services:
   # InfluxDB pour le stockage des données
   influxdb:
     image: influxdb:2.7
-    container_name: influxdb
+    container_name: plc-influxdb
     ports:
       - "8086:8086"
     networks:
@@ -58,10 +56,12 @@ services:
       - influxdb-data:/var/lib/influxdb2
       - influxdb-config:/etc/influxdb2
 
-  # Node-RED pour le traitement des données
+  # Node-RED pour le traitement des données PLC
   node-red:
-    image: nodered/node-red:latest
-    container_name: node-red
+    build:
+      context: ./node-red
+      dockerfile: Dockerfile
+    container_name: plc-node-red
     ports:
       - "1880:1880"
     networks:
@@ -72,14 +72,17 @@ services:
     restart: unless-stopped
     environment:
       - TZ=Europe/Paris
+      - NODE_RED_CREDENTIAL_SECRET=not-secret
     volumes:
       - node-red-data:/data
       - ./node-red/flows.json:/data/flows.json
+      - ./node-red/settings.js:/data/settings.js
+      - ./node-red/flows_cred.json:/data/flows_cred.json
 
   # Grafana pour la visualisation
   grafana:
     image: grafana/grafana:latest
-    container_name: grafana
+    container_name: plc-grafana
     ports:
       - "3000:3000"
     networks:

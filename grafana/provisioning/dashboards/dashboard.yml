@@ -1,3 +1,4 @@
+# Fichier de provisionnement des tableaux de bord Grafana
 apiVersion: 1
 
 providers:
